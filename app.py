@@ -57,7 +57,7 @@ initial_input = st.number_input("Enter amount", min_value=0.0, step=1.0, format=
 if st.button("Add to Balance"):
     st.session_state.balance += initial_input
     save_data(st.session_state.expenses, st.session_state.balance)
-    st.success(f"Added ${initial_input:.2f} to your balance")
+    st.success(f"Added ₹{initial_input:.2f} to your balance")
 
 # Add Expense
 st.subheader("Log an Expense")
@@ -71,13 +71,13 @@ if st.button("Add Expense"):
         st.session_state.expenses.append(expense)
         st.session_state.balance -= amount
         save_data(st.session_state.expenses, st.session_state.balance)
-        st.success(f"Added expense: {reason} - ${amount:.2f}")
+        st.success(f"Added expense: {reason} - ₹{amount:.2f}")
     else:
         st.error("Not enough balance!")
 
 # Show Balance and Table
 st.subheader("💰 Current Balance")
-st.info(f"${st.session_state.balance:.2f}")
+st.info(f"₹{st.session_state.balance:.2f}")
 
 if st.session_state.expenses:
     st.subheader("📒 Expenses")
