@@ -9,17 +9,30 @@ BALANCE_FILE = "balance.txt"
 
 # Load data
 def load_data():
-    if os.path.exists(EXPENSES_FILE):
-        with open(EXPENSES_FILE, "r") as f:
-            expenses = json.load(f)
-    else:
-        expenses = []
+    expenses = []
+    balance = 0.0
 
+    # Load expenses
+    if os.path.exists(EXPENSES_FILE):
+        try:
+            with open(EXPENSES_FILE, "r") as f:
+                content = f.read().strip()
+                if content:
+                    expenses = json.loads(content)
+        except (json.JSONDecodeError, ValueError):
+            expenses = []  # Reset corrupted file
+            st.warning("⚠️ 'expenses.json' was corrupted or empty. Starting fresh.")
+
+    # Load balance
     if os.path.exists(BALANCE_FILE):
-        with open(BALANCE_FILE, "r") as f:
-            balance = float(f.read())
-    else:
-        balance = 0.0
+        try:
+            with open(BALANCE_FILE, "r") as f:
+                balance_str = f.read().strip()
+                if balance_str:
+                    balance = float(balance_str)
+        except ValueError:
+            balance = 0.0
+            st.warning("⚠️ 'balance.txt' was corrupted or empty. Resetting balance.")
 
     return expenses, balance
 
